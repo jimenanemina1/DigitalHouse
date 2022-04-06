@@ -94,7 +94,6 @@
 
 const autos = require('./autos');
 const kmMax = 100;
-const cantCuotas = 12;
 const concesionaria = {
     autos: autos,
          buscarAuto: function(patente) {
@@ -159,30 +158,32 @@ const concesionaria = {
         } 
      }, 
      puedeComprar: function (auto, persona){
-       console.log("a la funcion puede comprar entro el auto : " + JSON.stringify(auto))
-      if (auto.precio > persona.capacidadDePagoTotal) {
-     return false;
-   }
-   let precioPorCuota = auto.precio / 12 ;
-   if (precioPorCuota > persona.capacidadDePagoEnCuotas) {
-     return false;
-   }
-   return true;
-  },
+      // console.log("a la funcion puede comprar entro el auto : " + JSON.stringify(auto))
+      let precioPorCuota = auto.precio / auto.cuotas ;
+      if (auto.precio < persona.capacidadDePagoTotal && precioPorCuota < persona.capacidadDePagoEnCuotas) {
+        return true;
+      } else  {
+        return false;
+      }
+    },
   autosQuePuedeComprar: function (persona){
-  let autosQuePuedeComprar = [];
   let autosParaLaVenta = this.autosParaLaVenta();
+  let autosAretonar = [];
+ 
+console.log( "autos para la venta tiene: " + autosParaLaVenta)
+
 
     for(let i = 0; i < autosParaLaVenta.length  ; i++){
-      let autoAevaluar = autosParaLaVenta[i];
-      let autos = this.puedeComprar(autoAevaluar, persona)
-       autosQuePuedeComprar.push(autos)
+        if(this.puedeComprar(autosParaLaVenta[i], persona)){
+         autosAretonar.push(autosParaLaVenta[i]);
+        }
+        
     }
-    return autosQuePuedeComprar;
+    return autosAretonar;
   }
  };
  //console.log(concesionaria.venderAuto('JJK116'));
-console.log(concesionaria.autosQuePuedeComprar({nombre: "Juan",capacidadDePagoEnCuotas: 20,capacidadDePagoTotal: 160000}));
+console.log(concesionaria.autosQuePuedeComprar({nombre: "Juan",capacidadDePagoEnCuotas: 7200,capacidadDePagoTotal: 100000000}));
 
 //Ahora, te comprometiste a realizarla. Así que manos a la obra. Hay que escribir la función autosQuePuedeComprar, que recibe una persona y devuelve la lista de autos que puede comprar.
 

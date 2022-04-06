@@ -12,7 +12,7 @@ let autos = [{
 {
     marca: "Toyota",
     modelo: "Corolla",
-    precio: 150000,
+    precio: 100000,
     km: 0,
     color: "Blanco",
     cuotas: 14,
